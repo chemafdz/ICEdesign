@@ -1,0 +1,10 @@
+ prob case=01591743 sp 
+
+   s/r = 1.061380 
+   p,bar = 1.013300 
+ reac 
+   name Air             wt%= 93.80 
+   name C8H18,isooctane wt%=  6.20 
+ output massf 
+ output trace=1e-51 
+ end 
