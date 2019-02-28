@@ -76,6 +76,21 @@ function [result,P,V,T,S,W] = ICE_CEA (P_a, T_a, r_c)
         
     end
     
+    %State 1
+    list = linspace(S_4,S_1,50);
+    i = 1;
+    while i < length(list)
+        i = i+1;
+        
+        State_3 = SV_CEA(list(i), V_1);
+        
+        V(i+147) = State_3(3);
+        P(i+147) = State_3(2);
+        T(i+147) = State_3(1);
+        S(i+147) = list(i);
+        
+    end
+    
     %State ex
     S_ex = S_4;
     
@@ -84,9 +99,6 @@ function [result,P,V,T,S,W] = ICE_CEA (P_a, T_a, r_c)
     T_ex = State_ex(1);
     U_ex = State_ex(4);
     V_ex = State_ex(3);
-    
-    P(149) = P_a;
-    V(149) = V_1;
     
     W12 = U_2-U_1;
     W34 = U_3-U_4;
