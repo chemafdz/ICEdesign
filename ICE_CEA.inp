@@ -1,7 +1,7 @@
  prob case=01591743 sp 
 
-   s/r = 1.061380 
-   p,bar = 1.013300 
+   s/r = 1.015856 
+   p,bar = 1.000000 
  reac 
    name Air             wt%= 93.80 
    name C8H18,isooctane wt%=  6.20 
