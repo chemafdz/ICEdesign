@@ -26,8 +26,11 @@ D = 8.5319e-2; % Diámetro del Cilindro m;
 L = 8.2779e-2; % Carrera m;
 N = 5366.67; % rpm
 rc = 9.9; % relación de compreción
-OF = 15; % Relación Oxidante Combustible
+OF = 1/16.2; % Relación Oxidante Combustible, cantidad de combustible que contiene 1 kg de mezcla (Giacosa, p.74)
+U_s_F = 46024000; % Joules/kg de combustible (Giacosa, p. 74)
 r_l = 1; % Definir! Relación r/l
+K = 4; % Número de cilindros
+D_cil_max = D;
 
 %% Punto 2
 %
@@ -51,7 +54,7 @@ r_l = 1; % Definir! Relación r/l
 
 % Rendimiento termodinámico ideal:
 
-eta_i = 1-rc^(1-1.3); % Asumiendo gamma = 1.3;
+eta_i = 1-rc^(1-1.3); % Asumiendo gamma = 1.3; Relación de energías !
 
 % Presión media ideal:
 
@@ -66,6 +69,7 @@ PMEI_bar = W_i_u/(max(V_i_u)-min(V_i_u)); % bar
 P_i = P_i_u * 100000; % Pascals
 V_i = V_i_u * V_d;
 
+figure(2)
 plot(P_i,V_i);
 
 %% Punto6 
@@ -84,7 +88,7 @@ eta_c = .5*(.88+.96);
 eta_d = 0.8;
 eta_m = 0.85;
 eta_v = .93;
-eta_e = 1; %WTF
+eta_e = 1; %WTF % Rendimiento total
 
 %% Punto 8
 % 
@@ -94,7 +98,7 @@ eta_e = 1; %WTF
 
 m_dot_f = 1; % definir!
 
-[W_dot_R,m_dot_a,S_W_dot_R] = Punto8(W_dot_i,m_dot_f,OF,eta_c,eta_d,eta_mec,eta_v,eta_e);
+[W_dot_R,m_dot_a,S_W_dot_R] = Punto8(W_dot_i,m_dot_f,OF,eta_c,eta_d,eta_m,eta_v,eta_e);
 
 %% Punto 9
 
@@ -102,7 +106,8 @@ m_dot_f = 1; % definir!
 % de acuerdo a motores similares en potencia, r.p.m,
 % disposición de cilindros, etc.
 
-r = L * r_l;
+r = L * r_l; 
+% calcular también cilindradas u y t
 
 %% Punto 10
 
@@ -113,6 +118,7 @@ r = L * r_l;
 P_i = P_i_u * 100000; % Convertir a psi
 V_i = V_i_u * V_d; % convertir a in^3
 
+figure(3)
 plot(P_i,V_i);
 
 %% Punto 11
@@ -121,7 +127,7 @@ plot(P_i,V_i);
 
 [a_0, a_F, IVO, IVC, EVO, EVC] = RC_angles (N, D_cil_max);
 
-[P_prac,V_prac] = ICE_prac(P_i_u,V_i_u,a_0, a_F, IVO, IVC, EVO, EVC]); % Falta!
+[P_prac,V_prac] = ICE_prac(P_i_u,V_i_u,a_0, a_F, IVO, IVC, EVO, EVC); % Falta!
 
 %% Punto 12
 
@@ -130,6 +136,8 @@ plot(P_i,V_i);
 % verificar contra la calculada en el punto 8. Verficar
 % la potencia toal o al freno según sea el caso, usando el
 % rendimiento mecánico estimado en el punto 7
+
+% contra P1 potencia diagrama
 
 W_prac = int(P_prac,V_prac); % !
 W_dot_prac = W_prac * N/2; % ! 

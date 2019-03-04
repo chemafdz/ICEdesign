@@ -1,5 +1,5 @@
 function [result] = PlotAngleAxis(P,V)
-    plot(V,P*100)
+    plot(V,P)
     Angles = [180 150 130 120 110 100 90 80 70 60 50 30 0];
     n = length(Angles);
     V_1 = linspace(max(V),min(V),n);
