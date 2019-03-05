@@ -1,4 +1,4 @@
-function [result,P,V,T,S,W] = ICE_CEA (P_a, T_a, r_c)
+function [result,P,V,T,S,Wnet,eta] = ICE_CEA (P_a, T_a, r_c)
     %State 1
     State_1 = TP_CEA(P_a, T_a);
     
@@ -105,6 +105,7 @@ function [result,P,V,T,S,W] = ICE_CEA (P_a, T_a, r_c)
     Wnet = W34-W12;
     
     W = [W12, W34, Wnet];
+    eta = W(3)/(U_3-U_1);
     figure
     subplot(1,2,1);
     plot(V,P)

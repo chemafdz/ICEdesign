@@ -1,4 +1,4 @@
-function [result] = RC_angles (N, S)
+function [a_0, a_F, IVO, IVC, EVO, EVC] = RC_angles (N, S)
     
     %Ignition timing
     a_0 = 0.3756*N*S/(0.025*N+50);
@@ -7,12 +7,10 @@ function [result] = RC_angles (N, S)
     a_F = a_0/0.75;
     
     %Inlet timing
-    IVO = -10;
-    IVC = IVO+65;
+    IVO = 10;
+    IVC = -IVO+65;
     
     %Exhaust timing
-    EVO = -45;
-    EVC = EVO+65;
-    
-    [result] = [a_0, a_F, IVO, IVC, EVO, EVC];
+    EVO = 45;
+    EVC = -EVO+65;
 end
