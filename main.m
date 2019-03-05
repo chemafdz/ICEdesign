@@ -32,6 +32,10 @@ r_l = 1; % Definir! Relación r/l
 K = 4; % Número de cilindros
 D_cil_max = D;
 
+% Conversiones 
+bar2psi = 14.5038;
+m2in = 39.3701;
+
 %% Punto 2
 %
 % Hoja de datos técnicos del motor
@@ -49,16 +53,13 @@ D_cil_max = D;
 
 % Ciclo ideal para una unidad de masa de aire combustible:
 
-[result_i_u,P_i_u,V_i_u,T_i_u,S_i_u,W_i_u] = ICE_CEA(1,300,rc);
+[result_i_u,P_i_u,V_i_u,T_i_u,S_i_u,W_i_u,eta_i] = ICE_CEA(1,300,rc);
 % Presión de admisión de 1 bar a 300 kelvin
-
-% Rendimiento termodinámico ideal:
-
-eta_i = 1-rc^(1-1.3); % Asumiendo gamma = 1.3; Relación de energías !
 
 % Presión media ideal:
 
 PMEI_bar = W_i_u/(max(V_i_u)-min(V_i_u)); % bar
+PMEI_psi = bar2psi*PMEI_bar; % psi
 
 %% Punto 5
 %
@@ -66,11 +67,11 @@ PMEI_bar = W_i_u/(max(V_i_u)-min(V_i_u)); % bar
 % considerando 10 puntos intermedios entre los puntos
 % (sic) 1-2, 3-4, y 4-4' del diagrama PV
 
-P_i = P_i_u * 100000; % Pascals
-V_i = V_i_u * V_d;
+P_i_psi = P_i_u * bar2psi; % psi
+V_i_in = V_i_u * V_d * m2in^3; %in
 
 figure(2)
-plot(P_i,V_i);
+plot(V_i_in,P_i_psi);
 
 %% Punto6 
 
@@ -88,7 +89,7 @@ eta_c = .5*(.88+.96);
 eta_d = 0.8;
 eta_m = 0.85;
 eta_v = .93;
-eta_e = 1; %WTF % Rendimiento total
+eta_e = eta_c*eta_d*eta_m*eta_v; % Rendimiento total
 
 %% Punto 8
 % 
@@ -96,9 +97,9 @@ eta_e = 1; %WTF % Rendimiento total
 % rendimientos estimados y calcular el consumo de aire,
 % consumo de combustible, y potencia específica.
 
-m_dot_f = 1; % definir!
+[W_dot_R,m_dot_f,m_dot_a,S_W_dot_R] = Punto8(W_dot_i,U_s_F,OF,eta_e,eta_i);
 
-[W_dot_R,m_dot_a,S_W_dot_R] = Punto8(W_dot_i,m_dot_f,OF,eta_c,eta_d,eta_m,eta_v,eta_e);
+% ! Flujos másicos mal
 
 %% Punto 9
 
@@ -107,6 +108,9 @@ m_dot_f = 1; % definir!
 % disposición de cilindros, etc.
 
 r = L * r_l; 
+cilindrada_unitaria = L*.25*D^2;
+cilindrada_total = L*.25*D^2*K;
+
 % calcular también cilindradas u y t
 
 %% Punto 10
@@ -115,11 +119,7 @@ r = L * r_l;
 % volumen en in del motor real dimensionado en el punto 
 % (sic) 8 y la relación r/l seleccionada.
 
-P_i = P_i_u * 100000; % Convertir a psi
-V_i = V_i_u * V_d; % convertir a in^3
-
-figure(3)
-plot(P_i,V_i);
+% Hecho en el punto 5
 
 %% Punto 11
 
@@ -127,7 +127,7 @@ plot(P_i,V_i);
 
 [a_0, a_F, IVO, IVC, EVO, EVC] = RC_angles (N, D_cil_max);
 
-[P_prac,V_prac] = ICE_prac(P_i_u,V_i_u,a_0, a_F, IVO, IVC, EVO, EVC); % Falta!
+[P_prac_psi,V_prac_in] = IndicatedCycle (P_i_psi,V_i_in,a_0, a_F, IVO, IVC, EVO, EVC);
 
 %% Punto 12
 
@@ -139,9 +139,8 @@ plot(P_i,V_i);
 
 % contra P1 potencia diagrama
 
-W_prac = int(P_prac,V_prac); % !
 W_dot_prac = W_prac * N/2; % ! 
-e_prac_R = (W_dot_prac - W_dot_R)/W_dot_prac;
+e_prac_R = (W_dot_prac - W_dot_R)/W_dot_prac; % !
 W_prac_R = W_prac * eta_m; % !
 
 %% Punto 13
@@ -168,4 +167,4 @@ W_prac_R = W_prac * eta_m; % !
 % y la potencia indicada, y comprobarla con la potencia
 % indicada.
 
-% ! 
+% !

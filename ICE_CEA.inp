@@ -1,6 +1,6 @@
  prob case=01591743 sp 
 
-   s/r = 1.033825 
+   s/r = 1.056653 
    p,bar = 1.000000 
  reac 
    name Air             wt%= 93.80 
