@@ -7,12 +7,12 @@ function [result] = RC_angles (N, S)
     a_F = a_0/0.75;
     
     %Inlet timing
-    IVO = -10;
-    IVC = IVO+65;
+    IVO = 10;
+    IVC = -IVO+65;
     
     %Exhaust timing
-    EVO = -45;
-    EVC = EVO+65;
+    EVO = 45;
+    EVC = -EVO+65;
     
     [result] = [a_0, a_F, IVO, IVC, EVO, EVC];
 end
