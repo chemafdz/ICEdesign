@@ -1,4 +1,4 @@
-function [PR,VR] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
+function [PR,VR,W_prac] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
 
     % Ángulos absolutos
     IVC = 180 - IVC;
@@ -9,7 +9,7 @@ function [PR,VR] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
     V2 = VofT(V,a_0); % Ignition 
     V3 = min(V);
     P3 = 0.5*max(P);
-    V4 = (min(V)+VofT(V,a_F))*.5;
+    V4 = min(V)+(VofT(V,a_F)-min(V))*50; % nera
     P4 = 0.75*max(P);
     V5 = VofT(V,a_F);
     V6 = VofT(V,EVO);
@@ -24,16 +24,19 @@ function [PR,VR] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
     V12 = max(V);
     P12 = min(P);
     
-    VR(1) = V1;
-    PR(1) = min(P);
+    PR = []; VR = [];
     
     for i = 1:length(V)
         if V(i) <= V1 && V(i) >= V2
-            PR(end+1) = P(i);
+            PR(end+1) = P(i); %#ok<*AGROW>
             VR(end+1) = V(i);
         end
         if V(i) <= V2
-            W1 = trapz([VR V3],[PR P3])
+            P2 = PR(end);
+            i_P2 = length(PR);
+            figure(1)
+            % W1 = trapz([VR V3],[PR P3]) + trapz([V7,V1],[P7,P1]); %
+            plot([VR V3],[PR P3])
             VR = [VR,V3,V4];
             PR = [PR,P3,P4];
             for j = i:length(V)
@@ -42,6 +45,13 @@ function [PR,VR] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
                     VR(end+1) = V(j);
                 end
                 if V(j) >= V6
+                    P6 = PR(end);
+                    P7 = 0.5*P6; % nera
+                    figure(2)
+                    W2 = trapz([VR(i_P2+1:end),V7],[PR(i_P2+1:end),P7]);
+                    figure(3)
+                    W1 = trapz([V7,VR(1),VR(1:i_P2+1)],[P7,P(1),PR(1:i_P2+1)]);
+                    % W_pump = 
                     VR = [VR,V7,V8,V9,V10,V11,V12,V1];
                     PR = [PR,0.5*P(j-1),PR(2),P9,P10,P11,P12,PR(2)]; % P7 muy ñero
                     break;
@@ -51,7 +61,9 @@ function [PR,VR] = IndicatedCycle(P,V,a_0, a_F, IVO, IVC, EVO, EVC)
         end
     end
     
-    figure(1)
+    W_prac = W2+W1;
+    
+    figure(4)
     plot(VR,PR)
     hold
     plot(V,P,'-.')
