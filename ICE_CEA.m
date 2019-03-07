@@ -1,5 +1,7 @@
-function [result,P,V,T,S,Wnet,eta] = ICE_CEA (P_a, T_a, r_c)
+function [P,V,Wnet,eta] = ICE_CEA (r_c)
     %State 1
+    P_a = 1;
+    T_a = 300;
     State_1 = TP_CEA(P_a, T_a);
     
     U_1 = State_1(4);
