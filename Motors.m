@@ -36,12 +36,13 @@ classdef Motors <handle
 				obj.A = obj.D^2*.25*pi;
 				obj.V_d = obj.A*obj.L*obj.K;
 				% Modelado del ciclo ideal
-				[obj.P_i,obj.V_i_u,obj.W_i_u,obj.eta_i] = ICE_CEA(obj.rc); % kPa, m^3, kJ
-				obj.V_i = obj.V_i_u * obj.A * obj.L;
-                obj.W_i = obj.W_i_u * obj.A * obj.L;
+				[obj.P_i,obj.V_i_u,work_per_mass,obj.eta_i] = ICE_CEA(obj.rc); % kPa, m^3, kJ/kg
+                obj.W_i_u = work_per_mass/max(obj.V_i_u); % kJ/kg max(V_i_u) = vol específico de mezcla aire combustible
+				obj.V_i = obj.V_i_u * obj.A * obj.L / max(obj.V_i_u);
+                obj.W_i = obj.W_i_u * obj.A * obj.L; % kJ
             end
         end
-        function [PR,VR,W] = W_prac(obj,N) % Rutina para la obtención del ciclo práctico
+        function [PR,VR,TR,FR,W] = W_prac(obj,N) % Rutina para la obtención del ciclo práctico
             % Ignition timing
             a_0 = 0.3756*N*obj.D_cc/(0.025*N+50);
             % Combustion ending
@@ -77,31 +78,43 @@ classdef Motors <handle
             V12 = max(V);
             P12 = min(P);
             
-            PR = []; VR = [];
+            T = TofV(V,V); % Crank Angle
+            
+            PR = []; VR = []; TR = []; FR = [];
 
             for i = 1:length(V)
                 if V(i) <= V1 && V(i) >= V2
                     PR(end+1) = P(i);
                     VR(end+1) = V(i);
+                    TR(end+1) = T(i);
+                    FR(end+1) = P(i)*obj.A;
                 end
                 if V(i) <= V2
                     P2 = PR(end);
                     i_P2 = length(PR);
                     VR = [VR,V3,V4]; %#ok<*AGROW>
                     PR = [PR,P3,P4];
+                    TR = [TR,TofV(V,V3),360-TofV(V,V4)];
+                    FR = [FR,P3*obj.A,P4*obj.A];
                     for j = i:length(V)
                         if V(j) >= V5 && V(j) <= V6
-                            PR(end+1) = 0.8*P(j); % Expansión
+                            PR(end+1) = 0.85*P(j); % Expansión
                             VR(end+1) = V(j);
+                            TR(end+1) = 360-T(j);
+                            FR(end+1) = 0.85*P(j)*obj.A;
                         end
                         if V(j) >= V6
                             P6 = PR(end);
                             P7 = 0.5*P6; % nera
                             W2 = trapz([VR(i_P2+1:end),V7],[PR(i_P2+1:end),P7]);
                             W1 = trapz([V7,VR(1),VR(1:i_P2+1)],[P7,P(1),PR(1:i_P2+1)]);
-                            % W_pump = 
+                            W_pump = trapz([V10,V11,V12],[P10,P11,P12]) - trapz([V12,V8,V9,V10],[P12,PR(2),P9,P10]);
                             VR = [VR,V7,V8,V9,V10,V11,V12,V1];
-                            PR = [PR,0.5*P(j-1),PR(2),P9,P10,P11,P12,PR(2)]; % P7 muy ñero
+                            PR = [PR,P7,PR(2),P9,P10,P11,P12,PR(2)]; % P7 muy ñero
+                            TR = [TofV(V,V12),TR,360-TofV(V,V7),360+TofV(V,V8),360+TofV(V,V9)];
+                            TR = [TR,720-TofV(V,V10),720-TofV(V,V11),720-TofV(V,V12)];
+                            FR = [P12*obj.A,FR,P7*obj.A,PR(2)*obj.A,P9*obj.A];
+                            FR = [FR,P10*obj.A,P11*obj.A,P12*obj.A];
                             break;
                         end
                     end
@@ -109,20 +122,20 @@ classdef Motors <handle
                 end
             end
 
-            W = W2+W1;
+            W = W2+W1-W_pump;
+            
+            FR = FR*100; % [bar-m^2] to kN
 
             figure(4)
             plot(VR,PR)
             hold
             plot(V,P,'-.')
             hold off
+            figure(5)
+            plot(TR,FR)
+            figure(6)
+            polarplot(TR,FR)
 
         end
-        function [P] = PME(obj,W) % Presión media efectiva
-             P = W/(obj.V_d);
-        end
-    end
-    methods (Static)
-        
     end
 end

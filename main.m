@@ -37,6 +37,9 @@ N = 5366.67; % rpm
 % Conversiones 
 bar2psi = 14.5038;
 m2in = 39.3701;
+Pa2psi = 0.000145038;
+kW2HP = 1.34102;
+kN2lb = 224.809;
 
 %% Punto 2
 %
@@ -60,8 +63,8 @@ motor.W_i_u
 
 % Presión media ideal:
 
-PMEI_bar = motor.PME(motor.W_i_u); % bar
-PMEI_psi = bar2psi*PMEI_bar; % psi
+PMEI = motor.W_i/(max(motor.V_i)-min(motor.V_i)); % kPa
+PMEI_psi = 1000*Pa2psi*PMEI; % psi
 
 %% Punto 5
 %
@@ -77,8 +80,9 @@ plot(V_i_in,P_i_psi);
 
 %% Punto6 
 
-PMEI = PMEI_bar * 100000; % Pascals
-W_dot_i = PMEI * motor.V_d * (N/2); % Watts
+% W_dot_i = PMEI * motor.V_d * (N/120); % kW
+W_dot_i = motor.W_i*motor.K*(N/120); % kW
+W_dot_i_HP = W_dot_i*kW2HP;
 
 %% Punto 7
 %
@@ -100,11 +104,10 @@ eta_e = eta_c*eta_d*eta_m*eta_v; % Rendimiento total
 % consumo de combustible, y potencia específica.
 
 W_dot_R = W_dot_i*eta_e;
+W_dot_R_HP = W_dot_R*kW2HP;
 m_dot_f = (W_dot_i/motor.eta_i)/motor.deltaH;
-m_dot_a = motor.OF*m_dot_f;
+m_dot_a = m_dot_f/motor.OF;
 S_W_dot_R = W_dot_R/(m_dot_f*9.81);
-
-% ! Flujos másicos mal
 
 %% Punto 9
 
@@ -127,7 +130,10 @@ S_W_dot_R = W_dot_R/(m_dot_f*9.81);
 
 % Obtener el ciclo práctico
 
-[P_prac,V_prac,W_prac] = motor.W_prac(N);
+[P_prac,V_prac,Fg,T_prac,W_prac] = motor.W_prac(N);
+
+figure(10)
+polarplot(T_prac,Fg*kN2lb)
 
 %% Punto 12
 
@@ -139,9 +145,10 @@ S_W_dot_R = W_dot_R/(m_dot_f*9.81);
 
 % contra P1 potencia diagrama
 
-% W_dot_prac = W_prac * N/2; % ! 
-% e_prac_R = (W_dot_prac - W_dot_R)/W_dot_prac; % !
-% W_prac_R = W_prac * eta_m; % !
+W_dot_prac = W_prac*100*motor.K*(N/120); % W_prac [bar-m3]
+W_dot_prac_HP = W_dot_prac*kW2HP;
+BHP = W_dot_prac_HP*eta_m;
+e_prac_R = abs((BHP - W_dot_R_HP)/BHP); 
 
 %% Punto 13
 
