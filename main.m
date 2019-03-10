@@ -166,7 +166,7 @@ e_prac_R = abs((BHP - W_dot_R_HP)/BHP);
 % de fuerza a lo largo de la biela, de fuerza rotativa,
 % y la curva del par motor.
 
-[F_g,F_a,F_r,F_N,F_b,F_t,theta] = Forces(N,motor.L,motor.L/2,F_g,T_prac);
+[F_g,F_a,F_r,F_N,F_b,F_t,M,theta] = Forces(N,motor.L,motor.L/2,F_g,T_prac);
 
 
 %% Punto 16
@@ -175,4 +175,4 @@ e_prac_R = abs((BHP - W_dot_R_HP)/BHP);
 % y la potencia indicada, y comprobarla con la potencia
 % indicada.
 
-% !
+motor.K*mean(M); % motor.K*trapz(theta,M)/trapz(theta,ones(1,length(theta)))
