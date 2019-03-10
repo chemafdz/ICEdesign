@@ -130,10 +130,10 @@ S_W_dot_R = W_dot_R/(m_dot_f*9.81);
 
 % Obtener el ciclo práctico
 
-[P_prac,V_prac,Fg,T_prac,W_prac] = motor.W_prac(N);
+[P_prac,V_prac,F_g,T_prac,W_prac] = motor.W_prac(N);
 
-figure(10)
-polarplot(T_prac,Fg*kN2lb)
+% figure(10)
+% polarplot(T_prac,Fg*kN2lb)
 
 %% Punto 12
 
@@ -166,7 +166,8 @@ e_prac_R = abs((BHP - W_dot_R_HP)/BHP);
 % de fuerza a lo largo de la biela, de fuerza rotativa,
 % y la curva del par motor.
 
-% ! Chema
+[F_g,F_a,F_r,F_N,F_b,F_t,theta] = Forces(N,motor.L,motor.L/2,F_g,T_prac);
+
 
 %% Punto 16
 

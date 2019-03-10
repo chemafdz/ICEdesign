@@ -44,18 +44,18 @@ classdef Motors <handle
         end
         function [PR,VR,TR,FR,W] = W_prac(obj,N) % Rutina para la obtención del ciclo práctico
             % Ignition timing
-            a_0 = 0.3756*N*obj.D_cc/(0.025*N+50);
+            a_0 = 0.3756*N*obj.D_cc/(0.025*N+50)
             % Combustion ending
-            a_F = a_0/0.75;
+            a_F = a_0/0.75
             % Inlet timing
-            IVO = 10;
+            IVO = 10
             IVC = -IVO+65;
             % Exhaust timing
             EVO = 45;
-            EVC = -EVO+65;
+            EVC = -EVO+65
             % Ángulos absolutos
-            IVC = 180 - IVC;
-            EVO = 180 - EVO;
+            IVC = 180 - IVC
+            EVO = 180 - EVO
             
             % Puntos del Ciclo práctico
             P = obj.P_i; V = obj.V_i;
