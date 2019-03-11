@@ -48,7 +48,7 @@ classdef Motors <handle
                 obj.W_i = obj.W_i_u * obj.A * obj.L; % kJ
             end
         end
-        function [PR,VR,TR,FR,W] = W_prac(obj,N) % Rutina para la obtención del ciclo práctico
+        function [PR,VR,FR,TR,W] = W_prac(obj,N) % Rutina para la obtención del ciclo práctico
             % Ignition timing
             a_0 = 0.3756*N*obj.D_cc/(0.025*N+50)
             % Combustion ending
