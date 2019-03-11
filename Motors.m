@@ -36,7 +36,13 @@ classdef Motors <handle
 				obj.A = obj.D^2*.25*pi;
 				obj.V_d = obj.A*obj.L*obj.K;
 				% Modelado del ciclo ideal
-				[obj.P_i,obj.V_i_u,work_per_mass,obj.eta_i] = ICE_CEA(obj.rc); % kPa, m^3, kJ/kg
+                x_b = 0.025;
+                x_b_last = 0;
+                while x_b ~= x_b_last
+                    [obj.P_i,obj.V_i_u,work_per_mass,obj.eta_i,table] = ICE_CEA(x_b,obj.rc); % kPa, m^3, kJ/kg
+                    x_b_last = x_b;
+                    x_b = table{3,4}/table{6,4};
+                end
                 obj.W_i_u = work_per_mass/max(obj.V_i_u); % kJ/kg max(V_i_u) = vol específico de mezcla aire combustible
 				obj.V_i = obj.V_i_u * obj.A * obj.L / max(obj.V_i_u);
                 obj.W_i = obj.W_i_u * obj.A * obj.L; % kJ

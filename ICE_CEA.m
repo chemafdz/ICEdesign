@@ -1,4 +1,4 @@
-function [P,V,Wnet,eta] = ICE_CEA (r_c)
+function [P,V,Wnet,eta,table] = ICE_CEA (x_b, r_c)
     %State 1
     P_a = 1;
     T_a = 300;
@@ -9,7 +9,7 @@ function [P,V,Wnet,eta] = ICE_CEA (r_c)
     V_1 = State_1(3);
     P(1) = P_a;
     V(1) = V_1;
-    T(1) = T_a;
+    T(1) =(1 - x_b)*T_a/(1-(1/r_c));
     S(1) = S_1;
     
     %State 2
@@ -113,5 +113,5 @@ function [P,V,Wnet,eta] = ICE_CEA (r_c)
     plot(V,P)
     subplot(1,2,2);
     plot(S,T)
-    [result] = {'State', 'T (K)', 'P (bar)', 'V (m^3/kg)', 'u (kJ/kg)', 's (kJ/kg/K)'; 1, T_a, P_a, V_1, U_1, S_1; 2, T_2, P_2, V_2, U_2, S_2; 3, T_3, P_3, V_3, U_3, S_3; 4, T_4, P_4, V_4, U_4, S_4; 'EX', T_ex, P_a, V_ex, U_ex, S_ex};
+    table = {'State', 'T (K)', 'P (bar)', 'V (m^3/kg)', 'u (kJ/kg)', 's (kJ/kg/K)'; 1, T_a, P_a, V_1, U_1, S_1; 2, T_2, P_2, V_2, U_2, S_2; 3, T_3, P_3, V_3, U_3, S_3; 4, T_4, P_4, V_4, U_4, S_4; 'EX', T_ex, P_a, V_ex, U_ex, S_ex};
 end
