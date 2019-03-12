@@ -11,7 +11,7 @@
 
   prob case=01591743 sp
   
-    s/r = 1.033825
+    s/r = 1.053646
     p,bar = 1.000000
   reac
     name Air             wt%= 93.80
@@ -23,7 +23,7 @@
  OPTIONS: TP=F  HP=F  SP=T  TV=F  UV=F  SV=F  DETN=F  SHOCK=F  REFL=F  INCD=F
  RKT=F  FROZ=F  EQL=F  IONS=F  SIUNIT=T  DEBUGF=F  SHKDBG=F  DETDBG=F  TRNSPT=F
 
- TRACE= 1.00E-51  S/R= 1.033825E+00  H/R= 0.000000E+00  U/R= 0.000000E+00
+ TRACE= 1.00E-51  S/R= 1.053646E+00  H/R= 0.000000E+00  U/R= 0.000000E+00
 
  P,BAR =     1.000000
 
@@ -109,8 +109,8 @@
 
  POINT ITN      T            N           O           AR          C 
                     H 
-   1   26    1192.766     -12.828     -23.300     -24.958     -24.277
-                 -14.246
+   1   26    1349.752     -13.007     -20.424     -25.195     -25.980
+                 -14.486
 
 
 
@@ -131,90 +131,91 @@
  THERMODYNAMIC PROPERTIES
 
  P, BAR            1.0000
- T, K             1192.77
- RHO, KG/CU M    2.8953-1
- H, KJ/KG        -1824.42
- U, KJ/KG        -2169.81
- G, KJ/KG        -12077.1
- S, KJ/(KG)(K)     8.5957
+ T, K             1349.75
+ RHO, KG/CU M    2.5585-1
+ H, KJ/KG        -1615.13
+ U, KJ/KG        -2005.98
+ G, KJ/KG        -13439.7
+ S, KJ/(KG)(K)     8.7606
 
  M, (1/n)          28.713
  (dLV/dLP)t      -1.00000
- (dLV/dLT)p        1.0000
- Cp, KJ/(KG)(K)    1.3170
- GAMMAs            1.2818
- SON VEL,M/SEC      665.4
+ (dLV/dLT)p        1.0001
+ Cp, KJ/(KG)(K)    1.3493
+ GAMMAs            1.2733
+ SON VEL,M/SEC      705.5
 
  MASS FRACTIONS
 
  *Ar             1.2115-2
- *C              4.400-34
- *CH             2.068-33
- CH2             1.283-29
- CH3             6.948-25
- CH2OH           2.076-24
- CH3O            4.393-26
- CH4             1.143-21
- CH3OH           9.547-23
- CH3OOH          9.232-33
- *CN             1.674-24
- CNN             3.144-36
- *CO             3.1200-5
- *CO2            1.9150-1
- COOH            3.205-13
- C2H2,acetylene  6.390-32
- CH2CO,ketene    1.168-26
- O(CH)2O         6.595-28
- HO(CO)2OH       1.298-21
- CH3CN           1.186-33
- CH3CO,acetyl    2.435-33
- C2H4            2.526-35
- CH3CHO,ethanal  7.402-33
- CH3COOH         1.300-29
- OHCH2COOH       3.075-30
- OCCN            8.719-30
- C2N2            2.101-31
- C2O             1.061-30
- C3O2            5.623-31
- *H              3.125-11
- HCN             5.935-17
- HCO             2.085-16
- HCCO            7.348-31
- HNC             2.347-19
- HNCO            1.553-13
- HNO             3.160-14
- HNO2            6.261-14
- HNO3            2.501-20
- HO2             2.502-14
- *H2             1.8711-6
- HCHO,formaldehy 4.446-16
- HCOOH           5.350-12
- H2O             8.7987-2
- H2O2            2.158-13
- (HCOOH)2        8.017-29
- *N              1.306-18
- NCO             6.900-19
- *NH             5.922-18
- NH2             8.302-16
- NH3             1.381-11
- NH2OH           2.102-18
- *NO             2.3235-8
- NO2             7.846-14
- NO3             3.360-24
+ *C              4.536-31
+ *CH             4.651-31
+ CH2             2.270-28
+ CH3             6.264-25
+ CH2OH           5.806-24
+ CH3O            1.863-25
+ CH4             6.708-23
+ CH3OH           2.661-23
+ CH3OOH          1.227-31
+ *CN             6.292-23
+ CNN             1.246-33
+ *CO             3.9534-5
+ *CO2            1.9149-1
+ COOH            2.405-12
+ C2H2,acetylene  3.845-32
+ CH2CO,ketene    5.635-27
+ O(CH)2O         1.056-27
+ HO(CO)2OH       2.204-21
+ CH3CN           9.212-35
+ CH3CO,acetyl    1.686-33
+ C2H4            1.468-36
+ CH3CHO,ethanal  7.097-34
+ CH3COOH         1.257-30
+ OHCH2COOH       1.234-30
+ OCCN            1.104-28
+ C2N2            4.134-31
+ C2O             3.470-29
+ C3O2            9.910-31
+ *H              4.014-10
+ HCN             5.737-17
+ HCO             1.435-15
+ HCCO            5.681-30
+ HNC             4.731-19
+ HNCO            1.668-13
+ HNO             1.998-12
+ HNO2            1.064-11
+ HNO3            4.884-17
+ HO2             1.177-11
+ *H2             1.6253-6
+ HCHO,formaldehy 4.588-16
+ HCOOH           5.383-12
+ H2O             8.7989-2
+ H2O2            1.631-11
+ (HCOOH)2        4.048-29
+ *N              3.537-16
+ NCO             1.572-17
+ *NH             3.628-16
+ NH2             6.238-15
+ NH3             5.791-12
+ NH2OH           1.889-17
+ *NO             1.4555-6
+ NO2             5.369-11
+ NO3             7.995-20
  *N2             7.0836-1
- NCN             9.255-31
- N2H2            1.273-20
- NH2NO2          2.133-26
- N2H4            4.430-26
- N2O             2.306-12
- N2O3            1.934-26
- N2O4            3.584-33
- N3              2.930-23
- N3H             4.971-22
- *O              6.872-13
- *OH             2.6231-8
- *O2             3.6698-9
- O3              5.082-23
+ NCN             7.688-29
+ N2H2            1.229-19
+ NH2NO2          6.171-24
+ N2H4            9.060-26
+ N2O             1.331-10
+ N2O3            5.722-22
+ N2O4            9.818-28
+ N2O5            2.622-33
+ N3              5.008-21
+ N3H             1.449-20
+ *O              2.880-10
+ *OH             7.9927-7
+ *O2             1.6849-6
+ O3              2.707-18
 
   * THERMODYNAMIC PROPERTIES FITTED TO 20000.K
 
@@ -239,7 +240,7 @@
  C7H15,n-heptyl  C7H16,n-heptane C7H16,2-methylh C8H8,styrene    C8H10,ethylbenz
  C8H16,1-octene  C8H17,n-octyl   C8H18,n-octane  C8H18,isooctane C9H19,n-nonyl  
  C10H8,naphthale C10H21,n-decyl  C12H9,o-bipheny C12H10,biphenyl HCCN           
- N2O5            C(gr)           H2O(cr)         H2O(L)         
+ C(gr)           H2O(cr)         H2O(L)         
 
  NOTE. WEIGHT FRACTION OF FUEL IN TOTAL FUELS AND OF OXIDANT IN TOTAL OXIDANTS
 

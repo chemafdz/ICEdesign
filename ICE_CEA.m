@@ -2,33 +2,37 @@ function [P,V,Wnet,eta,table] = ICE_CEA (x_b, r_c)
     %State 1
     P_a = 1;
     T_a = 300;
-    State_1 = TP_CEA(P_a, T_a);
+    
+    P_1 = P_a;
+    T_1 = (1 - x_b)*T_a/(1-(1/r_c));
+    
+    State_1 = TP_CEA(P_1, T_1);
     
     U_1 = State_1(4);
     S_1 = State_1(5);
     V_1 = State_1(3);
-    P(1) = P_a;
+    P(1) = P_1;
     V(1) = V_1;
-    T(1) =(1 - x_b)*T_a/(1-(1/r_c));
+    T(1) = T_1;
     S(1) = S_1;
     
     %State 2
     V_2 = V_1/r_c;
     S_2 = S_1;
+    State_2 = SV_CEA(S_2, V_2);
+    P_2 = State_2(2);
+    T_2 = State_2(1);
+    U_2 = State_2(4);
+    gamma = log(P_2/P_1)/log(V_1/V_2);
     list = linspace(V_1,V_2,50);
     i = 1;
     while i < length(list)
         i = i+1;
         
-        State_2 = SV_CEA(S_2, list(i));
-        
-        P_2 = State_2(2);
-        T_2 = State_2(1);
-        U_2 = State_2(4);
         V(i) = list(i);
-        P(i) = P_2;
-        T(i) = T_2;
-        S(i) = S_2;
+        P(i) = P_1*(V_1/list(i))^gamma;
+        T(i) = T_1*(P(i)/P_1)^(1-1/gamma);
+        S(i) = S_1;
         
     end
     
@@ -61,20 +65,20 @@ function [P,V,Wnet,eta,table] = ICE_CEA (x_b, r_c)
     %State 4
     V_4 = V_1;
     S_4 = S_3;
+    State_4 = SV_CEA(S_4, V_4);
+    P_4 = State_4(2);
+    T_4 = State_4(1);
+    U_4 = State_4(4);
+    gamma = log(P_4/P_3)/log(V_3/V_4);
     list = linspace(V_3,V_4,50);
     i = 1;
     while i < length(list)
         i = i+1;
         
-        State_4 = SV_CEA(S_4, list(i));
-        
-        P_4 = State_4(2);
-        T_4 = State_4(1);
-        U_4 = State_4(4);
         V(i+98) = list(i);
-        P(i+98) = P_4;
-        T(i+98) = T_4;
-        S(i+98) = S_4;
+        P(i+98) = P_3*(V_3/list(i))^gamma;
+        T(i+98) = T_3*(P(i)/P_3)^(1-1/gamma);
+        S(i+98) = S_3;
         
     end
     
@@ -108,10 +112,5 @@ function [P,V,Wnet,eta,table] = ICE_CEA (x_b, r_c)
     
     W = [W12, W34, Wnet];
     eta = W(3)/(U_3-U_1);
-    figure
-    subplot(1,2,1);
-    plot(V,P)
-    subplot(1,2,2);
-    plot(S,T)
-    table = {'State', 'T (K)', 'P (bar)', 'V (m^3/kg)', 'u (kJ/kg)', 's (kJ/kg/K)'; 1, T_a, P_a, V_1, U_1, S_1; 2, T_2, P_2, V_2, U_2, S_2; 3, T_3, P_3, V_3, U_3, S_3; 4, T_4, P_4, V_4, U_4, S_4; 'EX', T_ex, P_a, V_ex, U_ex, S_ex};
+    table = {'State', 'T (K)', 'P (bar)', 'V (m^3/kg)', 'u (kJ/kg)', 's (kJ/kg/K)'; 1, T_1, P_1, V_1, U_1, S_1; 2, T_2, P_2, V_2, U_2, S_2; 3, T_3, P_3, V_3, U_3, S_3; 4, T_4, P_4, V_4, U_4, S_4; 'EX', T_ex, P_a, V_ex, U_ex, S_ex};
 end

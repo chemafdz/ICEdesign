@@ -38,7 +38,7 @@ classdef Motors <handle
 				% Modelado del ciclo ideal
                 x_b = 0.025;
                 x_b_last = 0;
-                while x_b ~= x_b_last
+                while round(x_b,3) ~= round(x_b_last,3)
                     [obj.P_i,obj.V_i_u,work_per_mass,obj.eta_i,table] = ICE_CEA(x_b,obj.rc); % kPa, m^3, kJ/kg
                     x_b_last = x_b;
                     x_b = table{3,4}/table{6,4};
