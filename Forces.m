@@ -1,4 +1,10 @@
 function [F_g,F_a,F_r,F_N,F_b,F_t,M,theta] = Forces(N, L, R, F_g, theta)
+    % Conversiones 
+    bar2psi = 14.5038;
+    m2in = 39.3701;
+    Pa2psi = 0.000145038;
+    kW2HP = 1.34102;
+    kN2lb = 224.809;
     % Angular velocity
     w = N*0.10472;
     % Gas Force Fit
@@ -25,19 +31,36 @@ function [F_g,F_a,F_r,F_N,F_b,F_t,M,theta] = Forces(N, L, R, F_g, theta)
     % Engine torque
     M = - F_r * R .* ( sin(thetar) + 0.5*(R/L)*sin(2*thetar) );
     figure(12)
-    subplot(1,2,1)
-    plot(theta,F_g)
+    subplot(2,2,[1 3])
+    plot(theta,F_g*kN2lb/10^6)
     hold
-    plot(theta,F_a)
-    plot(theta,F_r)
-    plot(theta,F_N)
-    plot(theta,F_b)
-    plot(theta,F_t)
+    plot(theta,F_a*kN2lb/10^6)
+    plot(theta,F_r*kN2lb/10^6)
+    plot(theta,F_N*kN2lb/10^6)
+    plot(theta,F_b*kN2lb/10^6)
+    plot(theta,F_t*kN2lb/10^6)
     legend('F_g','F_a','F_r','F_N','F_b','F_t')
+    ylabel('Fuerza [klb]')
+    xlabel('Desplazamiento [°]')
+    title('Fuerzas del Motor')
+    grid on
     lgd = legend;
-    lgd.Title.String = 'Fuerzas (N)';
+    lgd.Title.String = 'Fuerzas (lb)';
     lgd.NumColumns = 2;
-    subplot(1,2,2)
-    plot(theta,M)
-    legend('Momento Motor (N-m)')
+    subplot(2,2,4)
+    plot(theta,M*kN2lb/10^3*m2in/12)
+    title('Momento Motor')
+    ylabel('Momento [lb-ft]')
+    xlabel('Desplazamiento [°]')
+    figure(12)
+    subplot(2,2,2)
+    polarplot(thetar,F_g*kN2lb/10^6)
+    hold
+    polarplot(thetar,F_a*kN2lb/10^6)
+    polarplot(thetar,F_r*kN2lb/10^6)
+    polarplot(thetar,F_N*kN2lb/10^6)
+    polarplot(thetar,F_b*kN2lb/10^6)
+    polarplot(thetar,F_t*kN2lb/10^6)
+    legend('F_g','F_a','F_r','F_N','F_b','F_t')
+    title('Polar de Fuerzas del Motor [klb]')
 end

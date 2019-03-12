@@ -111,7 +111,7 @@ S_W_dot_R = W_dot_R/(m_dot_f*9.81);
 
 %% Punto 9
 
-% Dimensionar el motor, seleccionando la relación l/d, r/l 
+% Dimensionar el motor, seleccionando la relación l/d, r/L 
 % de acuerdo a motores similares en potencia, r.p.m,
 % disposición de cilindros, etc.
 
@@ -131,6 +131,16 @@ S_W_dot_R = W_dot_R/(m_dot_f*9.81);
 % Obtener el ciclo práctico
 
 [P_prac,V_prac,F_g,T_prac,W_prac] = motor.W_prac(N);
+
+figure(4)
+plot(V_prac*m2in^3,P_prac*bar2psi)
+hold
+plot(motor.V_i*m2in^3,motor.P_i*bar2psi,'-.')
+legend('Práctico','Ideal')
+ylabel('Presión [psi]')
+xlabel('Volumen [in^3]')
+title('Ciclo Indicado vs Ciclo Ideal')
+grid on
 
 % figure(10)
 % polarplot(T_prac,Fg*kN2lb)
